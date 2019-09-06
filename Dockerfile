@@ -1,3 +1,3 @@
-FROM jobscale/nginx:bionic
+FROM jobscale/nginx:buster
 
 COPY . /var/www/html
