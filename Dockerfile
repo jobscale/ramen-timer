@@ -1,3 +1,3 @@
-FROM jobscale/nginx:buster
+FROM nginx
 
-COPY . /var/www/html
+COPY . /usr/share/nginx/html
