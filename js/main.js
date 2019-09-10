@@ -1,4 +1,4 @@
-const vm = new Vue({
+new Vue({
   el: "#app",
   data: {
     show: false,
@@ -10,46 +10,55 @@ const vm = new Vue({
     resetButton: false
   },
   methods: {
-    rotate_left: function() {
+    rotate_left() {
       this.isLeft = true;
       this.isRight = false;
     },
-    rotate_right: function() {
+    rotate_right() {
       this.isLeft = false;
       this.isRight = true;
     },
-    reload: function(event) {
+    reload(event) {
       window.location.reload();
     },
-    threeMin: function() {
+    threeMin() {
       this.pickTime = 3 * 60;
       this.totalTime = this.pickTime;
     },
-    fiveMin: function() {
+    fiveMin() {
       this.pickTime = 5 * 60;
       this.totalTime = this.pickTime;
     },
-    startTimer: function() {
+    startTimer() {
       this.timer = setInterval(() => this.countdown(), 1000);
       this.resetButton = true;
     },
-    stopTimer: function() {
+    stopTimer() {
       clearInterval(this.timer);
       this.timer = null;
       this.resetButton = true;
     },
-    resetTimer: function() {
+    resetTimer() {
       this.totalTime = this.pickTime;
       clearInterval(this.timer);
       this.timer = null;
       this.resetButton = false;
     },
-    padTime: function(time) {
+    padTime(time) {
       return (time < 10 ? "0" : "") + time;
     },
-    countdown: function() {
+    play() {
+      setTimeout(() => {
+        const sound = new Howl({ src: ['mp3/warning1.mp3'] });
+        sound.play();
+      }, 0);
+    },
+    countdown() {
       if (this.totalTime >= 1) {
         this.totalTime--;
+        if (this.totalTime === 5) {
+          this.play();
+        }
       } else {
         this.totalTime = 0;
         this.resetTimer();
@@ -58,7 +67,7 @@ const vm = new Vue({
     }
   },
   computed: {
-    minutes: function() {
+    minutes() {
       const minutes = Math.floor(this.totalTime / 60);
       return minutes;
     },
