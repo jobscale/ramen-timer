@@ -1,13 +1,16 @@
 new Vue({
   el: "#app",
-  data: {
-    show: false,
-    isLeft: false,
-    isRight: true,
-    timer: null,
-    pickTime: null,
-    totalTime: null,
-    resetButton: false
+  data() {
+    return {
+      show: false,
+      isLeft: false,
+      isRight: true,
+      timer: null,
+      pickTime: null,
+      totalTime: null,
+      resetButton: false,
+      sound: new Howl({ src: ['mp3/warning1.mp3'] }),
+    };
   },
   methods: {
     rotate_left() {
@@ -21,12 +24,8 @@ new Vue({
     reload(event) {
       window.location.reload();
     },
-    threeMin() {
-      this.pickTime = 3 * 60;
-      this.totalTime = this.pickTime;
-    },
-    fiveMin() {
-      this.pickTime = 5 * 60;
+    setMin(min) {
+      this.pickTime = min * 60;
       this.totalTime = this.pickTime;
     },
     startTimer() {
@@ -49,8 +48,7 @@ new Vue({
     },
     play() {
       setTimeout(() => {
-        const sound = new Howl({ src: ['mp3/warning1.mp3'] });
-        sound.play();
+        this.sound.play();
       }, 0);
     },
     countdown() {
@@ -71,9 +69,9 @@ new Vue({
       const minutes = Math.floor(this.totalTime / 60);
       return minutes;
     },
-    seconds: function() {
+    seconds() {
       const seconds = this.totalTime - this.minutes * 60;
       return this.padTime(seconds);
-    }
-  }
+    },
+  },
 });

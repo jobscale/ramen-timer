@@ -4,8 +4,9 @@ git clone https://github.com/jobscale/ramen-timer.git
 cd ramen-timer
 main() {
   docker build . -t local/ramen-timer:0.0.1
-  docker run --name ramen-timer --rm -d -p 80:80 local/ramen-timer:0.0.1
-  http_proxy= curl -v 127.0.0.1
+  docker run --rm --name ramen-timer -d -p 8000:80 local/ramen-timer:0.0.1
+  sleep 0.5
+  xdg-open http://127.0.0.1:8000
 } && main
 ```
 
