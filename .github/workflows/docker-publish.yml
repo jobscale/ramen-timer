@@ -52,7 +52,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=
+            type=raw,value=latest
             type=ref,event=tag
             type=ref,event=branch
 
