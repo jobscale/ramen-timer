@@ -7,7 +7,7 @@ name: Docker
 
 on:
   schedule:
-    - cron: '56 18 * * *'
+    - cron: '46 18 * * *'
   push:
     branches: [ master ]
     # Publish semver tags as releases.
@@ -65,3 +65,20 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Slack post
+        run: |
+          $(echo $SHELL) --version
+          id
+          free -h
+          df -h .
+          grep MH /proc/cpuinfo
+          GIP=$(curl -s https://inet-ip.info/ip)
+          echo "Global: $GIP"
+          DATA=$(echo $(cat << EOL
+          ${{ steps.meta.outputs.labels }}
+          EOL
+          ))
+          curl -is -X POST -H 'Content-Type: application/json' \
+          https://tanpo.jsx.jp/api/slack \
+          --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$GIP\\n$DATA\"}" || echo
