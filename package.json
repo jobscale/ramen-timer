@@ -1,0 +1,24 @@
+{
+  "name": "ramen-timer",
+  "private": true,
+  "version": "0.0.1",
+  "description": "ramen-timer",
+  "author": "jobscale <jobscale@users.noreply.github.com>",
+  "main": "public/js/index.js",
+  "scripts": {
+    "start": "serve public",
+    "lint": "eslint .",
+    "test": "npm run lint"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.0",
+    "serve": "^12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jobscale/ramen-timer.git"
+  },
+  "license": "MIT"
+}

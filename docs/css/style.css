@@ -1,6 +1,9 @@
 body {
-  background-image: url(../img/back.png);
-  padding-bottom: 50px;
+  background: url(/img/back.png) no-repeat;
+  background-size: cover;
+  margin: 0;
+  padding: 2vw;
+  height: 100vw;
   text-align: center;
 }
 
@@ -12,7 +15,7 @@ body {
 .v-enter,
 .v-leave-to {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(3vw);
 }
 
 [v-cloak] {
@@ -21,12 +24,12 @@ body {
 
 .right_face {
   display: block;
+  background: url(/img/button_right.png) no-repeat;
   background-size: cover;
-  background-image: url(../img/button_right.png);
-  padding: 200px;
-  margin: 50px auto 10px;
+  padding: 20vw;
+  margin: 5vw auto 1vw;
   border-radius: 50%;
-  border: 5px solid rgb(100, 100, 100);
+  border: 0.5vw solid rgb(100, 100, 100);
   animation: anime1 0.4s linear 2;
 }
 @keyframes anime1 {
@@ -37,12 +40,12 @@ body {
 
 .left_face {
   display: block;
-  background-size: cover;
-  padding: 200px;
-  margin: 50px auto 10px;
+  padding: 20vw;
+  margin: 5vw auto 1vw;
   border-radius: 50%;
-  border: 5px solid rgb(100, 100, 100);
-  background-image: url(../img/button_left.png);
+  border: 0.5vw solid rgb(100, 100, 100);
+  background: url(/img/button_left.png) no-repeat;
+  background-size: cover;
   animation: anime2 0.4s linear 2;
 }
 @keyframes anime2 {
@@ -60,11 +63,18 @@ body {
   border: none;
   cursor: pointer;
   outline: none;
-  color: #fff;
-  width: 200px;
-  box-shadow: 3px 3px 15px rgba(0, 0, 0, 3);
+  width: 17vw;
+  height: 17vw;
+  margin: 2vw 2vw 0 2vw;
+  box-shadow: 0.3vw 0.3vw 1.5vw rgba(0, 0, 0, 3);
+  color: #666;
+  font-size: 2.6vw;
+  font-weight: 600;
+  padding-top: 6.5vw;
   border-radius: 50%;
   transition: 0.5s;
+  background: url(/img/clock.png) no-repeat;
+  background-size: cover;
 }
 
 .right_timer:hover {
@@ -81,13 +91,19 @@ body {
   display: inline-block;
   border: none;
   cursor: pointer;
-  color: #fff;
   outline: none;
-  width: 200px;
-  margin-right: 40px;
-  box-shadow: 3px 3px 15px rgba(0, 0, 0, 3);
+  width: 17vw;
+  height: 17vw;
+  margin: 2vw 2vw 0 2vw;
+  box-shadow: 0.3vw 0.3vw 1.5vw rgba(0, 0, 0, 3);
+  color: #666;
+  font-size: 2.6vw;
+  font-weight: 600;
+  padding-top: 6.5vw;
   border-radius: 50%;
   transition: 0.5s;
+  background: url(/img/clock.png) no-repeat;
+  background-size: cover;
 }
 
 .left_timer:hover {
@@ -105,20 +121,20 @@ body {
   font-family: "Kosugi Maru", Verdana, Geneva, Tahoma, sans-serif;
   color: white;
   background-color: #000;
-  font-size: 85px;
+  font-size: 8vw;
   width: 85%;
-  margin: 220px auto 35px auto;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  margin: 20vw auto 3vw auto;
+  padding: 2vw;
+  border-radius: 0.5vw;
+  box-shadow: 0.1vw 0.1vw 0.3vw rgba(0, 0, 0, 0.5);
 }
 
 .start-button {
   display: inline-block;
   cursor: pointer;
   outline: none;
-  width: 90px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 3);
+  width: 9vw;
+  box-shadow: 0.1vw 0.1vw 0.3vw rgba(0, 0, 0, 3);
   border-radius: 50%;
   transition: 0.5s;
 }
@@ -131,9 +147,9 @@ body {
   display: inline-block;
   cursor: pointer;
   outline: none;
-  width: 90px;
+  width: 9vw;
   border-radius: 50%;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 3);
+  box-shadow: 0.1vw 0.1vw 0.3vw rgba(0, 0, 0, 3);
   transition: 0.5s;
 }
 
@@ -145,10 +161,10 @@ body {
   display: inline-block;
   cursor: pointer;
   outline: none;
-  width: 90px;
-  margin-left: 30px;
+  width: 9vw;
+  margin-left: 3vw;
   border-radius: 50%;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 3);
+  box-shadow: 0.1vw 0.1vw 0.3vw rgba(0, 0, 0, 3);
   transition: 0.5s;
 }
 
@@ -164,12 +180,12 @@ body {
   text-decoration: none;
   color: #1b1b1b;
   background: #fff;
-  border: 2px solid #1b1b1b;
-  font-size: 20px;
-  width: 160px;
-  margin-top: 30px;
-  padding: 10px;
-  border-radius: 5px;
+  border: 0.2vw solid #1b1b1b;
+  font-size: 2vw;
+  width: 16vw;
+  margin-top: 3vh;
+  padding: 1vw;
+  border-radius: 0.5vw;
   transition: 0.4s;
 }
 
@@ -180,21 +196,21 @@ body {
   text-decoration: none;
 }
 
-@media only screen and (max-width: 540px) {
+@media only screen and (max-width: 90vw) {
   .timer {
-    font-size: 50px;
+    font-size: 5vw;
   }
   .right_face {
-    padding: 140px;
+    padding: 14vw;
   }
   .left_face {
-    padding: 140px;
+    padding: 14vw;
   }
   .right_timer {
-    width: 130px;
+    width: 13vw;
   }
   .left_timer {
-    width: 130px;
-    margin-right: 15px;
+    width: 13vw;
+    margin-right: 1.5vw;
   }
 }

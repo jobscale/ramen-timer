@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="img/kurin.png" />
-    <link href="vendor/css/Kosugi+Maru.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <title>RamenTimer</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -17,17 +20,33 @@
         <!-- Pick TimeButton -->
         <div class="pick-button">
           <input
-            type="image" class="left_timer" src="img/1min.png"
-            @click="show = !show; setMin(1)" v-on:mouseover="rotate_left"
-          />
+            type="button" class="left_timer"
+            @click="show = !show; setMin(0.05)" v-on:mouseover="rotateLeft"
+            value="00:03" />
           <input
-            type="image" class="left_timer" src="img/3min.png"
-            @click="show = !show; setMin(3)" v-on:mouseover="rotate_left"
-          />
+            type="button" class="right_timer"
+            @click="show = !show; setMin(1)" v-on:mouseover="rotateRight"
+            value="1 MIN" />
           <input
-            type="image" class="right_timer" src="img/5min.png"
-            @click="show = !show; setMin(5)" v-on:mouseover="rotate_right"
-          />
+            type="button" class="left_timer"
+            @click="show = !show; setMin(3)" v-on:mouseover="rotateLeft"
+            value="3 MIN" />
+          <input
+            type="button" class="right_timer"
+            @click="show = !show; setMin(5)" v-on:mouseover="rotateRight"
+            value="5 MIN" />
+          <input
+            type="button" class="left_timer"
+            @click="show = !show; setMin(10)" v-on:mouseover="rotateLeft"
+            value="10 MIN" />
+          <input
+            type="button" class="right_timer"
+            @click="show = !show; setMin(15)" v-on:mouseover="rotateRight"
+            value="15 MIN" />
+          <input
+            type="button" class="left_timer"
+            @click="show = !show; setMin(20)" v-on:mouseover="rotateLeft"
+            value="20 MIN" />
         </div>
       </div>
 
@@ -60,9 +79,11 @@
         </div>
       </transition>
     </div>
-    <script defer type="text/javascript" src="vendor/js/howler.min.js"></script>
-    <script defer type="text/javascript" src="vendor/js/vue.js"></script>
-    <script defer type="text/javascript" src="vendor/js/sweetalert.min.js"></script>
-    <script defer type="text/javascript" src="js/main.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script defer src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script defer src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script defer src="https://unpkg.com/buefy/dist/components/dialog"></script>
+    <script defer src="js/index.js"></script>
   </body>
 </html>
