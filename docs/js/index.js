@@ -50,6 +50,7 @@ new Vue({
     },
     countdown() {
       if (this.totalTime === 4) {
+        this.totalTime--;
         this.play();
         return;
       }
@@ -58,7 +59,7 @@ new Vue({
         return;
       }
       this.stopTimer();
-      this.confirms()[Math.floor(Math.random() * 2) % 2]()
+      this.confirms()[Math.floor(Math.random() * 2)]()
       .then(() => this.resetTimer());
     },
     confirms() {
