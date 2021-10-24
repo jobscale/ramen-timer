@@ -116,6 +116,10 @@ body {
   }
 }
 
+.clock {
+  height: 40vw;
+}
+
 .timer {
   display: inline-block;
   font-family: "Kosugi Maru", Verdana, Geneva, Tahoma, sans-serif;
@@ -123,7 +127,7 @@ body {
   background-color: #000;
   font-size: 8vw;
   width: 85%;
-  margin: 20vw auto 3vw auto;
+  margin: 6vw auto 3vw auto;
   padding: 2vw;
   border-radius: 0.5vw;
   box-shadow: 0.1vw 0.1vw 0.3vw rgba(0, 0, 0, 0.5);

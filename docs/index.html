@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
     <title>RamenTimer</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/svelte-app.css" />
   </head>
 
   <body>
@@ -52,6 +53,7 @@
 
       <transition appear>
         <div v-show="show">
+          <div id="svelte-app" class=clock></div>
           <!-- Timer -->
           <div class="timer">
             <span id="minutes">{{ minutes }}</span>
@@ -85,5 +87,6 @@
     <script defer src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
     <script defer src="https://unpkg.com/buefy/dist/components/dialog"></script>
     <script defer src="js/index.js"></script>
+    <script defer src="js/svelte-app.js"></script>
   </body>
 </html>
