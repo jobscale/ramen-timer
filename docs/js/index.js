@@ -59,27 +59,11 @@ new Vue({
         return;
       }
       this.stopTimer();
-      this.confirms()[Math.floor(Math.random() * 2)]()
+      this.confirms()
       .then(() => this.resetTimer());
     },
     confirms() {
-      return [() => swal('Complete!!', '', 'success'), () => {
-        this.$buefy.toast.open('Completed!!');
-        const prom = {};
-        prom.pending = new Promise((...args) => {
-          [prom.resolve, prom.reject] = args;
-        });
-        this.$buefy.dialog.alert({
-          title: 'Complete!!',
-          message: 'Complete!! <b>success</b>',
-          hasIcon: true,
-          icon: 'algolia',
-          iconPack: 'fab',
-          confirmText: 'Cool!',
-          onConfirm: () => prom.resolve(),
-        });
-        return prom.pending;
-      }];
+      return swal('Complete!!', '', 'success');
     },
   },
   computed: {
