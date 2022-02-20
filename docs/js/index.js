@@ -1,5 +1,4 @@
-new Vue({
-  el: '#app',
+Vue.createApp({
   data() {
     return {
       show: false,
@@ -79,4 +78,4 @@ new Vue({
       this.sound = new Howl({ src: ['mp3/warning1.mp3'] });
     }, 0);
   },
-});
+}).mount('#app');
