@@ -7,6 +7,11 @@ body {
   text-align: center;
 }
 
+header {
+  text-align: left;
+  font-weight: 600;
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.8s, transform 0.7s;
