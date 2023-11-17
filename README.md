@@ -1,6 +1,6 @@
 ### run with container
 ```
-git clone git@github.com:jobscale/ramen-timer.git
+git clone https://github.com/jobscale/ramen-timer.git
 cd ramen-timer
 main() {
   docker build . -t local/ramen-timer:0.0.1
