@@ -88,4 +88,4 @@ jobs:
           DATA=$(echo "${{ steps.meta.outputs.labels }}\n${{ steps.meta.outputs.tags }}" | sed -z -e 's/\n/\\n/g')
           curl -is -X POST -H 'Content-Type: application/json' \
           https://jsx.jp/api/slack \
-          --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$GIP\\n$DATA\"}" || echo
+          --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$GIP\n$DATA\",\"channel\":\"container\"}" || echo
