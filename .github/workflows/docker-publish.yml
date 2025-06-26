@@ -5,7 +5,7 @@ name: Docker
 # separate terms of service, privacy policy, and support
 # documentation.
 
-# The workflow was triggered 45 times via automatically.
+# The workflow was triggered 46 times via automatically.
 
 on:
   # schedule:
@@ -60,10 +60,17 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            rev${{ github.run_number }}
-            type=raw,value=latest
+            type=sha,format=short
             type=ref,event=tag
             type=ref,event=branch
+            type=raw,value=rev.${{ github.run_number }}
+            type=raw,value=latest
+
+      # Extract Custom Output
+      - name: Extract Custom Output
+        id: custom
+        run: |
+          echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -73,7 +80,9 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           platforms: ${{ env.PLATFORMS }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.custom.outputs.date }}
+            ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           cache-to: type=inline
@@ -87,7 +96,10 @@ jobs:
           grep MH /proc/cpuinfo
           GIP=$(curl -s https://inet-ip.info/ip)
           echo "Global: $GIP"
-          DATA=$(echo "${{ steps.meta.outputs.labels }}\n${{ steps.meta.outputs.tags }}" | sed -z -e 's/\n/\\n/g')
+          LABELS=$(echo "${{ steps.meta.outputs.labels }}" | grep -E 'image\.title=|image\.source=' | sed -E 's/org.opencontainers.image.[a-z]+=//' | xargs)
+          TAGS=$(echo "${{ steps.meta.outputs.tags }}" | grep -v -E 'latest')
+          MESSAGE="$GIP\n$LABELS\n$TAGS"
+          DATA=$(echo -e "$MESSAGE" | sed -z -e 's/\n/\\n/g')
           curl -is -X POST -H 'Content-Type: application/json' \
           https://jsx.jp/api/slack \
           --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$GIP\n$DATA\",\"channel\":\"container\"}" || echo
