@@ -5,7 +5,7 @@ name: Docker
 # separate terms of service, privacy policy, and support
 # documentation.
 
-# The workflow was triggered 91 times via automatically.
+# The workflow was triggered 92 times via automatically.
 
 on:
   # schedule:
@@ -137,7 +137,8 @@ jobs:
             LABELS="$(echo $LABELS | sed -e "s/ /  [ ${{ matrix.irregular }} ]  /")"
           fi
           TAGS=$(echo "${{ steps.meta.outputs.tags }}" | grep -v -E 'latest')
-          MESSAGE="$GIP\n$LABELS\n$TAGS"
+          STAMP=$(TZ=Asia/Tokyo date -Iseconds)
+          MESSAGE="$GIP - $STAMP\n$LABELS\n$TAGS"
           DATA=$(echo -e "$MESSAGE" | sed -z -e 's/\n/\\n/g')
           curl -is -X POST -H 'Content-Type: application/json' \
           https://jsx.jp/api/slack \
