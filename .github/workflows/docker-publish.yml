@@ -5,7 +5,7 @@ name: Docker
 # separate terms of service, privacy policy, and support
 # documentation.
 
-# The workflow was triggered 186 times via automatically.
+# The workflow was triggered 187 times via automatically.
 
 on:
   # schedule:
@@ -30,129 +30,129 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: regular
-            irregular: ''
-            docker_file: Dockerfile
+        - name: regular
+          irregular: ''
+          docker_file: Dockerfile
 
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Build ${{ matrix.name }}
-        run: echo "Build for ${{ matrix.name }}"
+    - name: Build ${{ matrix.name }}
+      run: echo "Build for ${{ matrix.name }}"
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    # Login against a Docker registry except on PR
+    # https://github.com/docker/login-action
+    - name: Log into registry ${{ env.REGISTRY }}
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set Custom Environment ${{ matrix.name }}
-        run: |
-          if [[ -n "${{ matrix.irregular }}" ]]; then
-            SUFFIX="-${{ matrix.irregular }}"
-            GH_DEFAULT=${{ matrix.irregular }}
-          else
-            SUFFIX=""
-            GH_DEFAULT=latest
-          fi
+    - name: Set Custom Environment ${{ matrix.name }}
+      run: |
+        if [[ -n "${{ matrix.irregular }}" ]]; then
+          SUFFIX="-${{ matrix.irregular }}"
+          GH_DEFAULT=${{ matrix.irregular }}
+        else
+          SUFFIX=""
+          GH_DEFAULT=latest
+        fi
 
-          if [[ "$GITHUB_REF" == refs/heads/* ]]; then
-            GH_EVENT="${GITHUB_REF#refs/heads/}"
-          elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            GH_EVENT="${GITHUB_REF#refs/tags/}"
-          else
-            GH_EVENT="num.${{ github.event.pull_request.number || github.event.number || 'unknown' }}"
-          fi
+        if [[ "$GITHUB_REF" == refs/heads/* ]]; then
+          GH_EVENT="${GITHUB_REF#refs/heads/}"
+        elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+          GH_EVENT="${GITHUB_REF#refs/tags/}"
+        else
+          GH_EVENT="num.${{ github.event.pull_request.number || github.event.number || 'unknown' }}"
+        fi
 
-          # latest or irregular
-          echo "GH_DEFAULT=${GH_DEFAULT}" >> $GITHUB_ENV
-          # short_sha or short_sha-irregular
-          echo "SHORT_SHA=${GITHUB_SHA::7}${SUFFIX}" >> $GITHUB_ENV
-          # date or date-irregular
-          echo "GH_DATE=$(date +%Y-%m-%d)${SUFFIX}" >> $GITHUB_ENV
-          # rev or rev-irregular
-          echo "GH_REV=rev.${GITHUB_RUN_NUMBER}${SUFFIX}" >> $GITHUB_ENV
-          # main or main-irregular
-          echo "GH_EVENT=${GH_EVENT}${SUFFIX}" >> $GITHUB_ENV
-        env:
-          IRREGULAR: ${{ matrix.irregular }}
+        # latest or irregular
+        echo "GH_DEFAULT=${GH_DEFAULT}" >> $GITHUB_ENV
+        # short_sha or short_sha-irregular
+        echo "SHORT_SHA=${GITHUB_SHA::7}${SUFFIX}" >> $GITHUB_ENV
+        # date or date-irregular
+        echo "GH_DATE=$(date +%Y-%m-%d)${SUFFIX}" >> $GITHUB_ENV
+        # rev or rev-irregular
+        echo "GH_REV=rev.${GITHUB_RUN_NUMBER}${SUFFIX}" >> $GITHUB_ENV
+        # main or main-irregular
+        echo "GH_EVENT=${GH_EVENT}${SUFFIX}" >> $GITHUB_ENV
+      env:
+        IRREGULAR: ${{ matrix.irregular }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=${{ env.GH_DEFAULT }}
-            type=raw,value=${{ env.GH_EVENT }}
-            type=raw,value=${{ env.GH_REV }}
-            type=raw,value=${{ env.SHORT_SHA }}
-            type=raw,value=${{ env.GH_DATE }}
+    # Extract metadata (tags, labels) for Docker
+    # https://github.com/docker/metadata-action
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=raw,value=${{ env.GH_DEFAULT }}
+          type=raw,value=${{ env.GH_EVENT }}
+          type=raw,value=${{ env.GH_REV }}
+          type=raw,value=${{ env.SHORT_SHA }}
+          type=raw,value=${{ env.GH_DATE }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          platforms: ${{ env.PLATFORMS }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          file: ${{ matrix.docker_file }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GH_DEFAULT }}
-          cache-to: type=inline
+    # Build and push Docker image with Buildx (don't push on PR)
+    # https://github.com/docker/build-push-action
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        platforms: ${{ env.PLATFORMS }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        file: ${{ matrix.docker_file }}
+        cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GH_DEFAULT }}
+        cache-to: type=inline
 
-      - name: Slack post ${{ matrix.name }}
-        run: |
-          cat /etc/os-release
-          $(echo $SHELL) --version
-          id
-          free -h
-          df -h .
-          grep MH /proc/cpuinfo
-          pwd
-          ls -la
-          GIP=$(curl -s https://inet-ip.info/ip)
-          echo "Global: $GIP"
-          LABELS=$(echo "${{ steps.meta.outputs.labels }}" | grep -E 'image\.title=|image\.source=' | sed -E 's/org.opencontainers.image.[a-z]+=//' | xargs)
-          if [[ -n "${{ matrix.irregular }}" ]]; then
-            LABELS="$(echo $LABELS | sed -e "s/ /  [ ${{ matrix.irregular }} ]  /")"
-          fi
-          TAGS=$(echo "${{ steps.meta.outputs.tags }}" | grep -v -E 'latest')
-          STAMP=$(TZ=Asia/Tokyo date -Iseconds)
-          MESSAGE="$GIP - $STAMP\n$LABELS\n$TAGS"
-          DATA=$(echo -e "$MESSAGE" | sed -z -e 's/\n/\\n/g')
-          curl -is -X POST -H 'Content-Type: application/json' \
-          https://jsx.jp/api/slack \
-          --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$DATA\",\"channel\":\"container\"}" || echo
+    - name: Slack post ${{ matrix.name }}
+      run: |
+        cat /etc/os-release
+        $(echo $SHELL) --version
+        id
+        free -h
+        df -h .
+        grep MH /proc/cpuinfo
+        pwd
+        ls -la
+        GIP=$(curl -s https://inet-ip.info/ip)
+        echo "Global: $GIP"
+        LABELS=$(echo "${{ steps.meta.outputs.labels }}" | grep -E 'image\.title=|image\.source=' | sed -E 's/org.opencontainers.image.[a-z]+=//' | xargs)
+        if [[ -n "${{ matrix.irregular }}" ]]; then
+          LABELS="$(echo $LABELS | sed -e "s/ /  [ ${{ matrix.irregular }} ]  /")"
+        fi
+        TAGS=$(echo "${{ steps.meta.outputs.tags }}" | grep -v -E 'latest')
+        STAMP=$(TZ=Asia/Tokyo date -Iseconds)
+        MESSAGE="$STAMP - $GIP\n$LABELS\n$TAGS"
+        DATA=$(echo -e "$MESSAGE" | sed -z -e 's/\n/\\n/g')
+        curl -is -X POST -H 'Content-Type: application/json' \
+        https://jsx.jp/api/slack \
+        --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$DATA\",\"channel\":\"container\"}" || echo
 
-      - name: Failure post ${{ matrix.name }}
-        if: failure()
-        run: |
-          LABELS=$(echo "${{ steps.meta.outputs.labels }}" | grep -E 'image\.title=|image\.source=' | sed -E 's/org.opencontainers.image.[a-z]+=//' | xargs)
-          if [[ -n "${{ matrix.irregular }}" ]]; then
-            LABELS="$(echo $LABELS | sed -e "s/ /  [ ${{ matrix.irregular }} ]  /")"
-          fi
-          MESSAGE="$LABELS\nFailed ${{ matrix.name }}"
-          DATA=$(echo -e "$MESSAGE" | sed -z -e 's/\n/\\n/g')
-          curl -is -X POST -H 'Content-Type: application/json' \
-          https://jsx.jp/api/slack \
-          --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$DATA\",\"channel\":\"push\"}" || echo
+    - name: Failure post ${{ matrix.name }}
+      if: failure()
+      run: |
+        LABELS=$(echo "${{ steps.meta.outputs.labels }}" | grep -E 'image\.title=|image\.source=' | sed -E 's/org.opencontainers.image.[a-z]+=//' | xargs)
+        if [[ -n "${{ matrix.irregular }}" ]]; then
+          LABELS="$(echo $LABELS | sed -e "s/ /  [ ${{ matrix.irregular }} ]  /")"
+        fi
+        MESSAGE="$LABELS\nFailed ${{ matrix.name }} $(TZ=Asia/Tokyo date -Iseconds)"
+        DATA=$(echo -e "$MESSAGE" | sed -z -e 's/\n/\\n/g')
+        curl -is -X POST -H 'Content-Type: application/json' \
+        https://jsx.jp/api/slack \
+        --data "{\"icon_emoji\":\":whale:\",\"username\":\"GitHub\",\"text\":\"$DATA\",\"channel\":\"push\"}" || echo
