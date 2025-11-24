@@ -7,14 +7,12 @@
   "main": "public/js/index.js",
   "scripts": {
     "start": "serve docs",
-    "lint": "eslint .",
+    "lint": "eslint",
     "test": "npm run lint"
   },
   "devDependencies": {
-    "eslint": "^8.42.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5",
-    "serve": "^14.2.0"
+    "eslint": "^9.39.1",
+    "serve": "^14.2.5"
   },
   "repository": {
     "type": "git",
