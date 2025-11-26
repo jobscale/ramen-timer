@@ -1,3 +1,5 @@
+/* global Vue, Howl, swal */
+
 Vue.createApp({
   data() {
     return {
