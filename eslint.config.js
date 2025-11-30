@@ -9,7 +9,6 @@ export default [{
   name: 'standard base rule',
   rules: {
     ...standard.configs.standard.rules,
-    'no-param-reassign': 'off',
   },
 }, {
   name: 'jest rule',
